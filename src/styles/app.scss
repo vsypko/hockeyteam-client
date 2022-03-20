@@ -1,0 +1,49 @@
+@import "./variables";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto";
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background-image: linear-gradient(
+      135deg,
+      rgba(255, 255, 0, 0.4),
+      rgba(0, 0, 200, 0.4)
+    ),
+    url("../assets/bg_image2.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  overscroll-behavior-y: contain;
+}
+
+@keyframes spinning {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+.logo {
+  width: 55px;
+  animation-name: spinning;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.small {
+  width: 150px;
+  transition: width 0.5s;
+}
+
+.large {
+  width: 300px;
+  transition: width 0.5s;
+}
