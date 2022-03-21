@@ -32,7 +32,7 @@ const Auth = observer(() => {
       localStorage.setItem("token", response.data.accessToken)
       userState.setUser(response.data.user)
     } catch (e) {
-      setError(e.response?.data?.message)
+      setError(e.response.data.message)
       console.log(e.response)
     }
   }
