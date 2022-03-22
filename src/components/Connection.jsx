@@ -16,6 +16,7 @@ import { SOCKET_URL } from "../utils/consts"
 const Connection = observer((props) => {
   const handleSubmit = () => {
     userState.setConnected(!userState.connected)
+    props.onclose(false)
     if (userState.connected && !userState.socket) {
       const socket = new WebSocket(SOCKET_URL)
       userState.setSocket(socket)
@@ -69,7 +70,6 @@ const Connection = observer((props) => {
             break
         }
       }
-      props.onclose(false)
     } else {
       if (!userState.connected && userState.socket) {
         userState.socket.close()
