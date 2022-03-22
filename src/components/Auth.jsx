@@ -33,7 +33,6 @@ const Auth = observer(() => {
       userState.setUser(response.data.user)
     } catch (e) {
       setError(e.response.data.message)
-      console.log(e.response)
     }
   }
 

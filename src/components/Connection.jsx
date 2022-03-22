@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import userState from "./store/userState"
 import teamState from "./store/teamState"
 import TextField from "@mui/material/TextField"
@@ -14,7 +14,8 @@ import CloseIcon from "@mui/icons-material/Close"
 import { SOCKET_URL } from "../utils/consts"
 
 const Connection = observer((props) => {
-  useEffect(() => {
+  const handleSubmit = () => {
+    userState.setConnected(!userState.connected)
     if (userState.connected && !userState.socket) {
       const socket = new WebSocket(SOCKET_URL)
       userState.setSocket(socket)
@@ -31,7 +32,11 @@ const Connection = observer((props) => {
 
       userState.socket.onmessage = (e) => {
         let msg = JSON.parse(e.data)
+
         switch (msg.method) {
+          case "herokuConnection":
+            userState.setServerTime(msg.serverTime)
+            break
           case "connection":
             handleChat(msg)
             break
@@ -75,14 +80,9 @@ const Connection = observer((props) => {
         console.log(`Session ${userState.sessionid} closed`)
       }
     }
-
-    // eslint-disable-next-line
-  }, [userState.connected])
-
-  const handleSubmit = () => {
-    userState.setConnected(!userState.connected)
     props.onclose(false)
   }
+
   const handleChat = (msg) => {
     userState.setChatMessages(msg)
   }

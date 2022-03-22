@@ -14,6 +14,10 @@ class UserState {
     makeAutoObservable(this)
   }
 
+  setServerTime(time) {
+    this.serverTime = time
+  }
+
   setAuth(bool) {
     this.isAuth = bool
   }
