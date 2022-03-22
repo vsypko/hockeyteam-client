@@ -69,6 +69,7 @@ const Connection = observer((props) => {
             break
         }
       }
+      props.onclose(false)
     } else {
       if (!userState.connected && userState.socket) {
         userState.socket.close()
