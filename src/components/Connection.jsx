@@ -70,18 +70,7 @@ const Connection = observer((props) => {
             break
         }
       }
-    } else {
-      if (!userState.connected && userState.socket) {
-        userState.socket.close()
-        userState.setSocket(null)
-        userState.setUser({
-          ...userState.user,
-          user_nickname: "",
-        })
-        console.log(`Session ${userState.sessionid} closed`)
-      }
     }
-    props.onclose(false)
   }
 
   const handleChat = (msg) => {

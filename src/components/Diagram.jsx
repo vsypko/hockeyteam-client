@@ -26,6 +26,10 @@ const Diagram = observer(() => {
   const handleConnectionDialog = () => {
     if (userState.connected) {
       userState.setConnected(false)
+      userState.socket.close()
+      userState.setSocket(null)
+      userState.setUser({ ...userState.user, user_nickname: "" })
+      console.log(`Session ${userState.sessionid} closed`)
     } else {
       setOpenConnectionDialog(true)
     }

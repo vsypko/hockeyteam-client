@@ -81,7 +81,6 @@ const ProfileDialog = observer((props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Save</Button>
-        {/* <Button onClick={handleClose}>Subscribe</Button> */}
       </DialogActions>
     </Dialog>
   )

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import axios from 'axios'
-import { API_URL } from '../../utils/consts'
+import {API_URL} from '../../utils/consts'
 
 class UserState {
   user = {}
@@ -48,7 +48,7 @@ class UserState {
     localStorage.setItem('token', this.response.data.accessToken)
     this.setUser(this.response.data.user)
    } catch (e) {
-    console.log(e.response?.data?.message)
+    console.log(e.response.data.message)
    }
 
   }
