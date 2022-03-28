@@ -18,7 +18,6 @@ import * as textpart from "../utils/texts"
 
 const Index = observer(() => {
   const [isUA, setIsUA] = React.useState(false)
-
   const TextBlock = (props) => {
     return (
       <Paper

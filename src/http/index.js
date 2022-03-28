@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { API_URL } from '../utils/consts'
 
 const api = axios.create({
   withCredentials: true,
-  baseURL: API_URL,
+  baseURL: process.env.REACT_APP_API_URL,
 })
 
 api.interceptors.request.use((config) => {

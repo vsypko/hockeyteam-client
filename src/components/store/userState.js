@@ -1,6 +1,5 @@
 import { makeAutoObservable } from 'mobx'
 import axios from 'axios'
-import {API_URL} from '../../utils/consts'
 
 class UserState {
   user = {}
@@ -43,7 +42,7 @@ class UserState {
   }
  async checkAuth() {
    try {
-    this.response = await axios.get(`${API_URL}/refresh`, {withCredentials: true})
+    this.response = await axios.get(`${process.env.REACT_APP_API_URL}/refresh`, {withCredentials: true})
     this.setAuth(true)
     localStorage.setItem('token', this.response.data.accessToken)
     this.setUser(this.response.data.user)
@@ -55,7 +54,7 @@ class UserState {
 
   async logout() {
       try {
-        await axios.post(`${API_URL}/logout`)
+        await axios.post(`${process.env.REACT_APP_API_URL}/logout`)
         localStorage.removeItem('token')
         this.setAuth(false)
         this.setUser({})

@@ -44,8 +44,16 @@ const Auth = observer(() => {
     }
   }
 
-  const responseGoogle = (response) => {
-    console.log(response)
+  const responseGoogle = async (res) => {
+    try {
+      const response = await api.post("/googleauth", { tokenId: res.tokenId })
+      userState.setAuth(true)
+      setError("")
+      localStorage.setItem("token", response.data.accessToken)
+      userState.setUser(response.data.user)
+    } catch (e) {
+      setError(e)
+    }
   }
 
   if (userState.isAuth) {
@@ -131,7 +139,7 @@ const Auth = observer(() => {
         <Typography>OR</Typography>
 
         <GoogleLogin
-          clientId="723906188335-js8s27s5k9rhq018nmcfrnhflv474dlb.apps.googleusercontent.com"
+          clientId={process.env.REACT_APP_CLIENT_ID}
           render={(renderProps) => (
             <Button
               onClick={renderProps.onClick}

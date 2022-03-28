@@ -11,14 +11,13 @@ import DialogTitle from "@mui/material/DialogTitle"
 import { observer } from "mobx-react-lite"
 import IconButton from "@mui/material/IconButton"
 import CloseIcon from "@mui/icons-material/Close"
-import { SOCKET_URL } from "../utils/consts"
 
 const Connection = observer((props) => {
   const handleSubmit = () => {
     userState.setConnected(!userState.connected)
     props.onclose(false)
     if (userState.connected && !userState.socket) {
-      const socket = new WebSocket(SOCKET_URL)
+      const socket = new WebSocket(process.env.REACT_APP_SOCKET_URL)
       userState.setSocket(socket)
 
       userState.socket.onopen = () => {
