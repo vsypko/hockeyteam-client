@@ -8,6 +8,8 @@ import { observer } from "mobx-react-lite"
 import { SvgIcon } from "@mui/material"
 
 const Team = observer((props) => {
+  const { leftcolor, rightcolor } = props
+
   useEffect(() => {
     if (teamState.topLayer) {
       teamState.players.forEach((player) => {
@@ -15,7 +17,7 @@ const Team = observer((props) => {
       })
       teamState.colorPlayers()
     }
-  }, [props.leftcolor, props.rightcolor])
+  }, [leftcolor, rightcolor])
 
   const handleChoice = (id) => {
     teamState.handlePlayerChoice(id)
@@ -44,10 +46,10 @@ const Team = observer((props) => {
             fontSize: 12,
             "&.Mui-selected":
               player.id < 5
-                ? { color: props.leftcolor }
+                ? { color: leftcolor }
                 : player.id === 5
                 ? { color: "#050505" }
-                : { color: props.rightcolor },
+                : { color: rightcolor },
           }}
         >
           {player.id !== 5 && player.name}

@@ -14,17 +14,18 @@ import userState from "./store/userState"
 import { observer } from "mobx-react-lite"
 
 const ProfileDialog = observer((props) => {
+  const { onopen, onclose } = props
   const handleClose = () => {
-    props.onclose(false)
+    onclose(false)
   }
 
   return (
-    <Dialog open={props.onopen} onClose={() => props.onclose(false)}>
+    <Dialog open={onopen} onClose={() => onclose(false)}>
       <DialogTitle>
         EXISTED USER DATA
         <IconButton
           aria-label="close"
-          onClick={() => props.onclose(false)}
+          onClick={() => onclose(false)}
           sx={{
             position: "absolute",
             right: 8,
