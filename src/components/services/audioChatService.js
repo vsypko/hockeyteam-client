@@ -11,8 +11,9 @@ class AudioChat {
     try {
       localStream = await navigator.mediaDevices.getUserMedia(constraints)
       client.localStream = localStream
-      client.peer = new RTCPeerConnection()
-      // {iceServers: [{ urls: "stun:stun.l.google.com:19302" }],}
+      client.peer = new RTCPeerConnection({
+        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      })
       localStream.getAudioTracks().forEach((track) => {
         client.peer.addTrack(track, localStream)
       })
