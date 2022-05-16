@@ -1,12 +1,12 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from "mobx"
 
-import allplayers from './playersState'
-import arena_filled from '../../assets/rink_filled.png'
-import arena_cleaner from '../../assets/rink_clean.png'
-import arena_cleaner_mob from '../../assets/rink_clean_mob.png'
-import arena_filled_mob from '../../assets/rink_filled_mob.png'
-import userState from './userState'
-import layerState from './layerState'
+import allplayers from "./playersState"
+import arena_filled from "../../assets/rink_filled.png"
+import arena_cleaner from "../../assets/rink_clean.png"
+import arena_cleaner_mob from "../../assets/rink_clean_mob.png"
+import arena_filled_mob from "../../assets/rink_filled_mob.png"
+import layerState from "./layerState"
+import socket from "./socketState"
 
 class TeamState {
   arena = null
@@ -15,8 +15,8 @@ class TeamState {
   playerRedoList = []
   orientation = false
   players = allplayers
-  leftTeamColor = '#A40000'
-  rightTeamColor = '#087008'
+  leftTeamColor = "#A40000"
+  rightTeamColor = "#087008"
 
   constructor() {
     makeAutoObservable(this)
@@ -33,9 +33,9 @@ class TeamState {
     this.topLayer = layerState.topLayer
     this.lowLayer = layerState.lowLayer
     this.canvasScape = layerState.canvasScape
-    
-    this.topctx = this.topLayer.getContext('2d')
-    this.lowctx = this.lowLayer.getContext('2d')
+
+    this.topctx = this.topLayer.getContext("2d")
+    this.lowctx = this.lowLayer.getContext("2d")
 
     this.rect = this.topLayer.getBoundingClientRect()
     this.offsetTop = this.rect.top
@@ -54,7 +54,7 @@ class TeamState {
     this.arena.onload = () => {
       this.topctx.imageSmoothingEnabled = true
       this.lowctx.imageSmoothingEnabled = true
-      this.arenaPattern = this.lowctx.createPattern(this.arena, 'no-repeat')
+      this.arenaPattern = this.lowctx.createPattern(this.arena, "no-repeat")
       this.lowctx.fillStyle = this.arenaPattern
       this.lowctx.fillRect(0, 0, this.lowLayer.width, this.lowLayer.height)
     }
@@ -168,7 +168,7 @@ class TeamState {
 
   arenaStateResponse(msg) {
     let playersState = []
-    
+
     this.players.forEach((player, index) => {
       if (player.selected) {
         playersState.push({
@@ -178,12 +178,12 @@ class TeamState {
         })
       }
     })
-    if (userState.socket) {
-      userState.socket.send(
+    if (socket.isConnected) {
+      socket.send(
         JSON.stringify({
-          method: 'arenares',
-          id: userState.sessionid,
-          nickname: userState.user.user_nickname,
+          method: "arenares",
+          session: socket.session,
+          nickname: socket.nickname,
           toUser: msg.nickname,
           arenaOrientation: this.canvasScape,
           playersState,
@@ -201,7 +201,12 @@ class TeamState {
         player.y = player.initY
       })
       msg.playersState.forEach((state) => {
-        const cca = this.currentCoordAdjustment(msg.arenaOrientation, state.playerIndex, state.x, state.y)
+        const cca = this.currentCoordAdjustment(
+          msg.arenaOrientation,
+          state.playerIndex,
+          state.x,
+          state.y
+        )
         this.players[state.playerIndex].selected = true
         this.players[state.playerIndex].x = cca.x
         this.players[state.playerIndex].y = cca.y
@@ -219,12 +224,13 @@ class TeamState {
     this.players[id].selected = !this.players[id].selected
     this.players[id].x = this.players[id].initX
     this.players[id].y = this.players[id].initY
-    if (userState.socket) {
-      userState.socket.send(
+
+    if (socket.isConnected) {
+      socket.send(
         JSON.stringify({
-          method: 'playerchoice',
-          id: userState.sessionid,
-          nickname: userState.user.user_nickname,
+          method: "playerchoice",
+          session: socket.session,
+          nickname: socket.nickname,
           playerId: id,
           selected: this.players[id].selected,
         })
@@ -255,15 +261,15 @@ class TeamState {
         svgPlayer[0].attributes[2].value = this.leftTeamColor
         svgPlayer[1].attributes[2].value = this.leftTeamColor
       } else if (this.players[id].id === 5) {
-        svgPlayer[0].attributes[2].value = '#050505'
-        svgPlayer[1].attributes[2].value = '#050505'
+        svgPlayer[0].attributes[2].value = "#050505"
+        svgPlayer[1].attributes[2].value = "#050505"
       } else {
         svgPlayer[0].attributes[2].value = this.rightTeamColor
         svgPlayer[1].attributes[2].value = this.rightTeamColor
       }
     } else {
-      svgPlayer[0].attributes[2].value = '#78909c'
-      svgPlayer[1].attributes[2].value = '#78909c'
+      svgPlayer[0].attributes[2].value = "#78909c"
+      svgPlayer[1].attributes[2].value = "#78909c"
     }
   }
 
@@ -276,7 +282,9 @@ class TeamState {
         const URL = window.URL || window.webkitURL || window
         const svgPlayer = document.getElementsByClassName(player.name)
         const clonedSvgPlayer = svgPlayer[0].cloneNode(true)
-        const playerBlob = new Blob([clonedSvgPlayer.outerHTML], { type: 'image/svg+xml;charset=utf-8' })
+        const playerBlob = new Blob([clonedSvgPlayer.outerHTML], {
+          type: "image/svg+xml;charset=utf-8",
+        })
         const playerBlobURL = URL.createObjectURL(playerBlob)
         player.img = new Image()
         player.img.onload = () => {
@@ -305,11 +313,23 @@ class TeamState {
 
   playerTouch(x, y, player) {
     if (player.id !== 5) {
-      if (x >= player.x && x <= player.x + 37 && y > player.y && y < player.y + 37 && player.selected) {
+      if (
+        x >= player.x &&
+        x <= player.x + 37 &&
+        y > player.y &&
+        y < player.y + 37 &&
+        player.selected
+      ) {
         return true
       }
     } else {
-      if (x >= player.x - 15 && x <= player.x + 15 && y > player.y - 15 && y < player.y + 15 && player.selected) {
+      if (
+        x >= player.x - 15 &&
+        x <= player.x + 15 &&
+        y > player.y - 15 &&
+        y < player.y + 15 &&
+        player.selected
+      ) {
         return true
       }
     }
@@ -323,16 +343,19 @@ class TeamState {
       const x = e.pageX - e.target.offsetLeft
       const y = e.pageY - e.target.offsetTop
       this.draggingPlayerIndex = this.players.findIndex(
-        (player) => this.playerTouch(x, y, player) && player.selected && !player.isDraggingBy
+        (player) =>
+          this.playerTouch(x, y, player) &&
+          player.selected &&
+          !player.isDraggingBy
       )
       this.topLayer.releasePointerCapture(e.pointerId)
       if (this.draggingPlayerIndex !== -1) {
-        if (userState.socket) {
-          userState.socket.send(
+        if (socket.isConnected) {
+          socket.send(
             JSON.stringify({
-              method: 'pointerdown',
-              id: userState.sessionid,
-              nickname: userState.user.user_nickname,
+              method: "pointerdown",
+              session: socket.session,
+              nickname: socket.nickname,
               arenaOrientation: this.canvasScape,
               pointerSet: {
                 playerIndex: this.draggingPlayerIndex,
@@ -342,7 +365,13 @@ class TeamState {
             })
           )
         } else {
-          this.handleSocketDown(this.canvasScape, userState.user.user_nickname, this.draggingPlayerIndex, x, y)
+          this.handleSocketDown(
+            this.canvasScape,
+            socket.nickname,
+            this.draggingPlayerIndex,
+            x,
+            y
+          )
         }
       }
     }
@@ -355,7 +384,11 @@ class TeamState {
     this.players[playerIndex].isDraggingBy = nickname
     this.players[playerIndex].corX = cca.x - this.players[playerIndex].x
     this.players[playerIndex].corY = cca.y - this.players[playerIndex].y
-    this.playerUndoList.push({ prevX: this.players[playerIndex].x, prevY: this.players[playerIndex].y, playerIndex })
+    this.playerUndoList.push({
+      prevX: this.players[playerIndex].x,
+      prevY: this.players[playerIndex].y,
+      playerIndex,
+    })
   }
 
   //define new coords of current moving player and send they to the clients--------------------
@@ -367,12 +400,12 @@ class TeamState {
       }
       const x = e.pageX - e.target.offsetLeft
       const y = e.pageY - e.target.offsetTop
-      if (userState.socket) {
-        userState.socket.send(
+      if (socket.isConnected) {
+        socket.send(
           JSON.stringify({
-            method: 'pointermove',
-            id: userState.sessionid,
-            nickname: userState.user.user_nickname,
+            method: "pointermove",
+            session: socket.session,
+            nickname: socket.nickname,
             arenaOrientation: this.canvasScape,
             playerSet: {
               playerIndex: this.draggingPlayerIndex,
@@ -404,9 +437,17 @@ class TeamState {
   drawPlayersTrack(playerIndex, startX, startY, dx, dy) {
     this.lowctx.beginPath()
     this.lowctx.lineWidth = playerIndex !== 5 ? 4 : 2
-    this.lowctx.strokeStyle = playerIndex < 5 ? this.leftTeamColor : playerIndex === 5 ? '#B0B0B0' : this.rightTeamColor
+    this.lowctx.strokeStyle =
+      playerIndex < 5
+        ? this.leftTeamColor
+        : playerIndex === 5
+        ? "#B0B0B0"
+        : this.rightTeamColor
     this.lowctx.fillRect(0, 0, this.lowLayer.width, this.lowLayer.height)
-    this.lowctx.moveTo(playerIndex !== 5 ? startX + 18 : startX + 3, playerIndex !== 5 ? startY + 31 : startY + 3)
+    this.lowctx.moveTo(
+      playerIndex !== 5 ? startX + 18 : startX + 3,
+      playerIndex !== 5 ? startY + 31 : startY + 3
+    )
     this.lowctx.lineTo(
       playerIndex !== 5 ? startX + dx + 18 : startX + dx + 3,
       playerIndex !== 5 ? startY + dy + 31 : startY + dy + 3
@@ -430,12 +471,12 @@ class TeamState {
       return
     }
 
-    if (userState.socket) {
-      userState.socket.send(
+    if (socket.isConnected) {
+      socket.send(
         JSON.stringify({
-          method: 'pointerup',
-          id: userState.sessionid,
-          nickname: userState.user.user_nickname,
+          method: "pointerup",
+          session: socket.session,
+          nickname: socket.nickname,
           playerIndex: this.draggingPlayerIndex,
         })
       )
@@ -448,7 +489,7 @@ class TeamState {
   //reseive pointer up event from client and handle pointer out---------------------------------------
 
   handleSocketUp(playerIndex) {
-    this.players[playerIndex].isDraggingBy = ''
+    this.players[playerIndex].isDraggingBy = ""
     this.players[playerIndex].corX = 0
     this.players[playerIndex].corY = 0
     this.arenaCleaning()
@@ -457,10 +498,13 @@ class TeamState {
   arenaCleaning() {
     this.arenaCleaner = new Image()
     this.arenaCleaner.onload = () => {
-      this.arenaPattern = this.lowctx.createPattern(this.arenaCleaner, 'no-repeat')
+      this.arenaPattern = this.lowctx.createPattern(
+        this.arenaCleaner,
+        "no-repeat"
+      )
       this.lowctx.fillStyle = this.arenaPattern
       this.lowctx.fillRect(0, 0, this.lowLayer.width, this.lowLayer.height)
-      this.arenaPattern = this.lowctx.createPattern(this.arena, 'no-repeat')
+      this.arenaPattern = this.lowctx.createPattern(this.arena, "no-repeat")
       this.lowctx.fillStyle = this.arenaPattern
     }
 

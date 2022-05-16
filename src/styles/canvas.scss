@@ -16,13 +16,12 @@
 
 @media only screen and (max-width: 600px) {
   .main {
-    width: 117vw;
     justify-content: center;
     align-items: center;
   }
   .arena {
     margin-left: 1px;
-    margin-top: 3px;
+    margin-top: 5px;
   }
   .lowlayer {
     background-image: url('../assets/rink_clean_mob.png');

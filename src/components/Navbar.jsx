@@ -56,19 +56,18 @@ const Navbar = observer((props) => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }} className="app-main">
+    <Box className="app-main">
       <AppBar
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar sx={{ boxShadow: "0 4px 5px gray" }}>
+        <Toolbar disableGutters sx={{ boxShadow: "0 4px 5px gray" }}>
           <IconButton
             size="large"
-            edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, display: { xs: "flex", sm: "none" } }}
-            onClick={(e) => setOpenDrawer(!openDrawer)}
+            sx={{ ml: 1, display: { xs: "flex", sm: "none" } }}
+            onClick={() => setOpenDrawer(!openDrawer)}
           >
             {openDrawer ? (
               <CloseIcon fontSize="inherit" />
@@ -108,33 +107,37 @@ const Navbar = observer((props) => {
                 onClick={() => setOpenDrawer(false)}
                 color="inherit"
               >
-                CHAT
+                CHAT INFO
               </ListItem>
               <ListItem
                 button
-                onClick={() => props.onchange(!props.mode)}
+                onClick={() => {
+                  props.onchange(!props.mode)
+                  setOpenDrawer(false)
+                }}
                 color="inherit"
               >
                 {!props.mode ? "DARK MODE" : "LIGHT MODE"}
               </ListItem>
             </List>
           </Drawer>
+          <Box ml={1} mr={2}>
+            <img src={logo} alt="logo" loading="lazy" className="logo"></img>
+          </Box>
 
-          <img src={logo} alt="logo" loading="lazy" className="logo"></img>
           <Typography
             noWrap
-            variant="h5"
             color="inherit"
             to="/"
             component={NavLink}
-            sx={{ textDecoration: "none" }}
+            sx={{ textDecoration: "none", fontSize: 32, fontWeight: "bold" }}
           >
             HOCKEY TEAM
           </Typography>
           <Stack
-            flexGrow={3}
+            flexGrow={1}
             direction="row"
-            spacing={2}
+            spacing={8}
             sx={{
               display: { xs: "none", sm: "flex" },
               justifyContent: "center",
@@ -159,7 +162,6 @@ const Navbar = observer((props) => {
 
             <Button
               component={NavLink}
-              disabled={userState.isAuth ? false : true}
               to="/diagram"
               sx={{
                 fontSize: "18px",
@@ -172,11 +174,10 @@ const Navbar = observer((props) => {
                 },
               }}
             >
-              Diagram
+              DIAGRAM
             </Button>
             <Button
               component={NavLink}
-              disabled={userState.isAuth ? false : true}
               to="/chat"
               sx={{
                 fontSize: "18px",
@@ -189,7 +190,7 @@ const Navbar = observer((props) => {
                 },
               }}
             >
-              Chat
+              CHAT INFO
             </Button>
           </Stack>
           <IconButton
@@ -238,6 +239,7 @@ const Navbar = observer((props) => {
                   <Avatar>{userAbb}</Avatar>
                 </IconButton>
                 <Menu
+                  id="account-menu"
                   anchorEl={anchorEl}
                   open={openMenu}
                   onClose={handleCloseUserMenu}

@@ -3,7 +3,6 @@ import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import Grid from "@mui/material/Grid"
 import IconButton from "@mui/material/IconButton"
-import { observer } from "mobx-react-lite"
 import training from "../assets/Donbass_training.jpg"
 import picture1 from "../assets/Diagram_3.png"
 import picture2 from "../assets/Diagram_4.jpg"
@@ -16,13 +15,14 @@ import gb_toggle from "../assets/gb.png"
 
 import * as textpart from "../utils/texts"
 
-const Index = observer(() => {
+const Index = () => {
   const [isUA, setIsUA] = React.useState(false)
   const TextBlock = (props) => {
     return (
       <Paper
+        elevation={5}
         sx={{
-          width: "95vw",
+          width: { xs: "95%", sm: "90%" },
           margin: 1,
           marginBottom: 5,
           padding: 1,
@@ -96,27 +96,22 @@ const Index = observer(() => {
       sx={{
         flexGrow: 1,
         marginTop: 2,
+        whiteSpace: "pre-line",
       }}
     >
-      <Grid container>
-        <Grid item xs={10} sx={{ textAlign: "center" }}>
-          <Typography variant="h4">SITE DESCRIPTION</Typography>
-        </Grid>
-        <Grid
-          item
-          xs={2}
-          sx={{
-            textAlign: "center",
-          }}
-        >
-          <IconButton size="small" value={isUA} onClick={() => setIsUA(!isUA)}>
-            <img
-              src={isUA ? gb_toggle : ua_toggle}
-              alt="language"
-              width="24px"
-            />
-          </IconButton>
-        </Grid>
+      <Grid item xs={10} sx={{ textAlign: "center" }}>
+        <Typography variant="h4">SITE DESCRIPTION</Typography>
+      </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          textAlign: "center",
+        }}
+      >
+        <IconButton size="small" value={isUA} onClick={() => setIsUA(!isUA)}>
+          <img src={isUA ? gb_toggle : ua_toggle} alt="language" width="24px" />
+        </IconButton>
       </Grid>
 
       <TextBlock
@@ -143,7 +138,6 @@ const Index = observer(() => {
         text1={!isUA ? textpart.TEXT_EN_7 : textpart.TEXT_UA_7}
         text2={!isUA ? textpart.TEXT_EN_8 : textpart.TEXT_UA_8}
         pic2={picture5}
-        height="700px"
         width="inherit"
       />
       <Grid container>
@@ -159,6 +153,6 @@ const Index = observer(() => {
       </Grid>
     </Grid>
   )
-})
+}
 
 export default Index

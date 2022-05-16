@@ -1,7 +1,11 @@
-import { Container, Stack, Input, Button, Box, Divider } from "@mui/material"
-
+import Container from "@mui/material/Container"
+import Stack from "@mui/material/Stack"
+import Input from "@mui/material/Input"
+import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
+import Divider from "@mui/material/Divider"
 import React from "react"
-import userState from "./store/userState"
+import socket from "./store/socketState"
 import { observer } from "mobx-react-lite"
 
 const Chat = observer(() => {
@@ -9,12 +13,12 @@ const Chat = observer(() => {
   const messagesEndRef = React.useRef(null)
 
   const handleSubmit = () => {
-    if (userState.socket) {
-      userState.socket.send(
+    if (socket.wsocket) {
+      socket.send(
         JSON.stringify({
           method: "chat",
-          id: userState.sessionid,
-          nickname: userState.user.user_nickname,
+          session: socket.session,
+          nickname: socket.nickname,
           message: value,
           msgId: Date.now(),
         })
@@ -38,7 +42,7 @@ const Chat = observer(() => {
           overflowY: "auto",
         }}
       >
-        {userState.messages.map((msg, index) => (
+        {socket.messages.map((msg, index) => (
           <Stack
             direction="row"
             key={index}
@@ -48,7 +52,7 @@ const Chat = observer(() => {
               marginLeft: "10px",
             }}
           >
-            {msg.nickname !== userState.user.user_nickname && msg.nickname}
+            {msg.nickname !== socket.nickname && msg.nickname}
             <Box
               key={msg.msgId}
               ml={1}
@@ -61,15 +65,10 @@ const Chat = observer(() => {
                 borderRadius: "6px",
                 backgroundColor: "#505060",
                 marginRight: "10px",
-                marginLeft:
-                  msg.nickname === userState.user.user_nickname
-                    ? "auto"
-                    : "10px",
+                marginLeft: msg.nickname === socket.nickname ? "auto" : "10px",
               }}
             >
-              {msg.method === "connection"
-                ? `User ${msg.nickname} has connected to session: ${msg.id}`
-                : `${msg.message}`}
+              {msg.message}
             </Box>
           </Stack>
         ))}
