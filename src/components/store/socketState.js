@@ -68,9 +68,6 @@ class Socket {
       this.audioClients = this.audioClients.filter(
         (client) => client !== clienttoleave
       )
-      this.iceCandidates = this.iceCandidates.filter(
-        (i) => i.nickname !== clienttoleave.nickname
-      )
     }
   }
 
