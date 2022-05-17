@@ -49,6 +49,7 @@ class AudioChat {
       .forEach((track) => track.stop())
     client.remoteAudio.srcObject = null
     client.remoteAudio.remove()
+    client.remoteAudio = null
     client.peer.close()
     client.peer = null
     client.connected = false
