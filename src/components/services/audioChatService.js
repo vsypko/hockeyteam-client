@@ -1,26 +1,16 @@
-// import React from "react"
 // eslint-disable-next-line no-unused-vars
 import adapter from "webrtc-adapter"
 import socket from "../store/socketState"
 
 class AudioChat {
   //--------------------------------------------------------------------------------------------------------
-  async setPC(client) {
-    const constraints = { audio: true, video: false }
-    let localStream = null
-    try {
-      localStream = await navigator.mediaDevices.getUserMedia(constraints)
-      client.localStream = localStream
-      client.peer = new RTCPeerConnection({
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      })
-      localStream.getAudioTracks().forEach((track) => {
-        client.peer.addTrack(track, localStream)
-      })
-    } catch (error) {
-      console.error("Error accessing media devices: ", error)
-    }
-
+  async setPC(client, localStream) {
+    client.peer = new RTCPeerConnection({
+      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+    })
+    localStream.getAudioTracks().forEach((track) => {
+      client.peer.addTrack(track, localStream)
+    })
     client.remoteAudio = document.createElement("audio")
     client.remoteAudio.autoplay = true
 
@@ -59,8 +49,6 @@ class AudioChat {
       .forEach((track) => track.stop())
     client.remoteAudio.srcObject = null
     client.remoteAudio = null
-    client.localStream.getTracks().forEach((track) => track.stop())
-    client.localStream = null
     client.peer.close()
     client.peer = null
     client.connected = false
@@ -68,9 +56,9 @@ class AudioChat {
 
   //------------------------------------------------------------------------------------------------------
 
-  async setOffer(remoteClients) {
+  async setOffer(remoteClients, localStream) {
     remoteClients.forEach(async (client) => {
-      await this.setPC(client)
+      await this.setPC(client, localStream)
       const offer = await client.peer.createOffer()
       await client.peer.setLocalDescription(offer)
       socket.send(
@@ -86,13 +74,13 @@ class AudioChat {
   }
 
   //-------------------------------------------------------------------------------------------------------------
-  async setAnswer(msg) {
+  async setAnswer(msg, localStream) {
     const client = {
       session: msg.session,
       nickname: msg.nickname,
     }
     try {
-      await this.setPC(client)
+      await this.setPC(client, localStream)
       const offer = new RTCSessionDescription(msg.offer)
       await client.peer.setRemoteDescription(offer)
       const answer = await client.peer.createAnswer()

@@ -102,7 +102,8 @@ class Socket {
         JSON.stringify({ method: "lastaudioleave", session: this.session })
       )
     }
-
+    this.localStream.getTracks().forEach((track) => track.stop())
+    this.localStream = null
     this.audioClients = []
     this.iceCandidates = []
     this.setAudioChat(false)
@@ -202,16 +203,17 @@ class Socket {
         break
 
       case "audioclients":
-        if (msg.audioClients.length > 0) {
-          this.audioClients = msg.audioClients
-          await audioChat.setOffer(this.audioClients)
-        }
         this.setAudioChat(true)
         this.setInAudio(false)
+        await this.setLocalStream()
+        if (msg.audioClients.length > 0) {
+          this.audioClients = msg.audioClients
+          await audioChat.setOffer(this.audioClients, this.localStream)
+        }
         break
 
       case "offer":
-        await audioChat.setAnswer(msg)
+        await audioChat.setAnswer(msg, this.localStream)
         break
 
       case "answer":
