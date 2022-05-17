@@ -34,7 +34,6 @@ class AudioChat {
 
     client.peer.ontrack = (e) => {
       client.remoteAudio.srcObject = e.streams[0]
-      console.log(client.remoteAudio)
     }
 
     client.peer.onclose = (e) => {
