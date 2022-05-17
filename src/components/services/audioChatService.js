@@ -97,8 +97,6 @@ class AudioChat {
         })
       )
       socket.addAudioClient(client)
-
-      await this.setIceCandidate(client)
     } catch (e) {
       console.error("WebRTC answer error", e)
     }
@@ -115,16 +113,13 @@ class AudioChat {
     } catch (e) {
       console.error("WebRTS set description error", e)
     }
-    await this.setIceCandidate(client)
   }
 
   //-----------------------------------------------------------------------------------------------------------
 
-  async setIceCandidate(client) {
-    const [candidate] = socket.getCandidates(client.nickname)
+  async setIceCandidates(client, candidate) {
     if (candidate) {
-      const iceCandidate = { ...candidate.iceCandidate }
-      await client.peer.addIceCandidate(new RTCIceCandidate(iceCandidate))
+      await client.peer.addIceCandidate(new RTCIceCandidate(candidate))
     }
   }
 }

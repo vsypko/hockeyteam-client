@@ -18,7 +18,6 @@ class Socket {
   inAudio = false
   isAudioChat = false
   localStream = null
-  iceCandidates = []
 
   constructor() {
     makeAutoObservable(this)
@@ -51,10 +50,6 @@ class Socket {
 
   getAudioClient(nickname) {
     return this.audioClients.find((client) => client.nickname === nickname)
-  }
-
-  addCandidates(candidate) {
-    this.iceCandidates.push(candidate)
   }
 
   getCandidates(nickname) {
@@ -221,11 +216,12 @@ class Socket {
         break
 
       case "candidate":
-        this.addCandidates({
-          session: msg.session,
-          nickname: msg.nickname,
-          iceCandidate: msg.candidate,
-        })
+        const client = this.audioClients.find(
+          (client) => client.nickname === msg.nickname
+        )
+        if (client) {
+          await audioChat.setIceCandidates(client, msg.candidate)
+        }
         break
 
       case "audioclientleave":
