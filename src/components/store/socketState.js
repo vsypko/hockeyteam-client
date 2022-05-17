@@ -37,7 +37,7 @@ class Socket {
   }
 
   async setLocalStream() {
-    const constraints = { audio: true, video: false }
+    const constraints = { audio: { echoCancellation: true }, video: false }
     try {
       this.localStream = await navigator.mediaDevices.getUserMedia(constraints)
     } catch (error) {
