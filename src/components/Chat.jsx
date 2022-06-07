@@ -72,7 +72,7 @@ const Chat = observer(() => {
             </Box>
           </Stack>
         ))}
-        <div ref={messagesEndRef} />
+        <Box ref={messagesEndRef} />
       </Stack>
       <Divider />
       <Stack

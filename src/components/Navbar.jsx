@@ -56,7 +56,7 @@ const Navbar = observer((props) => {
   }
 
   return (
-    <Box className="app-main">
+    <Box>
       <AppBar
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
