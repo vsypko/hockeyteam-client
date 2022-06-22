@@ -32,6 +32,7 @@ const App = observer(() => {
       userState.checkAuth()
     }
   })
+
   return (
     <ThemeProvider theme={mode ? darkTheme : lightTheme}>
       <CssBaseline />
