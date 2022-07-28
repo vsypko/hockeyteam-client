@@ -13,18 +13,21 @@ import { indigo } from "@mui/material/colors"
 
 const App = observer(() => {
   const currentTheme = window.matchMedia("(prefers-color-scheme: dark)")
+
   const darkTheme = createTheme({
     palette: {
       primary: indigo,
       mode: "dark",
     },
   })
+
   const lightTheme = createTheme({
     palette: {
       primary: indigo,
       mode: "light",
     },
   })
+
   const [mode, setMode] = React.useState(currentTheme.matches)
 
   React.useEffect(() => {
