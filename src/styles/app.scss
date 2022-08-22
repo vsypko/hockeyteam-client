@@ -1,0 +1,83 @@
+@import "./variables";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto";
+}
+
+body {
+  // width: 100vw;
+  // height: 100vh;
+  background-image: linear-gradient(
+      135deg,
+      rgba(255, 255, 0, 0.7),
+      rgba(0, 0, 200, 0.7)
+    ),
+    url("../assets/bg_image2.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  overscroll-behavior-y: contain;
+}
+
+
+@media only screen and (max-width: 430px) {
+  body {
+    width: 106vw;
+  }
+}
+
+@media only screen and (max-width: 416px) {
+  body {
+    width: 110vw;
+  }
+}
+
+@media only screen and (max-width: 394px) {
+  body {
+    width: 117vw;
+  }
+}
+
+@media only screen and (max-width: 385px) {
+  body {
+    width: 118vw;
+  }
+}
+
+@media only screen and (max-width: 376px) {
+  body {
+    width: 121vw;
+  }
+}
+
+@media only screen and (max-width: 361px) {
+  body {
+    width: 126vw;
+  }
+}
+
+@media only screen and (max-width: 321px) {
+  body {
+    width: 142vw;
+  }
+}
+
+@keyframes spinning {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+.logo {
+  width: 55px;
+  animation-name: spinning;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
