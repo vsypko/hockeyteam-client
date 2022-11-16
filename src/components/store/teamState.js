@@ -187,7 +187,7 @@ class TeamState {
           toUser: msg.nickname,
           arenaOrientation: this.canvasScape,
           playersState,
-        })
+        }),
       )
     }
     playersState = []
@@ -205,7 +205,7 @@ class TeamState {
           msg.arenaOrientation,
           state.playerIndex,
           state.x,
-          state.y
+          state.y,
         )
         this.players[state.playerIndex].selected = true
         this.players[state.playerIndex].x = cca.x
@@ -233,7 +233,7 @@ class TeamState {
           nickname: socket.nickname,
           playerId: id,
           selected: this.players[id].selected,
-        })
+        }),
       )
     } else {
       this.socketPlayerChoice(id, this.players[id].selected)
@@ -346,7 +346,7 @@ class TeamState {
         (player) =>
           this.playerTouch(x, y, player) &&
           player.selected &&
-          !player.isDraggingBy
+          !player.isDraggingBy,
       )
       this.topLayer.releasePointerCapture(e.pointerId)
       if (this.draggingPlayerIndex !== -1) {
@@ -362,7 +362,7 @@ class TeamState {
                 x,
                 y,
               },
-            })
+            }),
           )
         } else {
           this.handleSocketDown(
@@ -370,7 +370,7 @@ class TeamState {
             socket.nickname,
             this.draggingPlayerIndex,
             x,
-            y
+            y,
           )
         }
       }
@@ -412,7 +412,7 @@ class TeamState {
               x,
               y,
             },
-          })
+          }),
         )
       } else {
         this.handleSocketMove(this.canvasScape, this.draggingPlayerIndex, x, y)
@@ -446,11 +446,11 @@ class TeamState {
     this.lowctx.fillRect(0, 0, this.lowLayer.width, this.lowLayer.height)
     this.lowctx.moveTo(
       playerIndex !== 5 ? startX + 18 : startX + 3,
-      playerIndex !== 5 ? startY + 31 : startY + 3
+      playerIndex !== 5 ? startY + 31 : startY + 3,
     )
     this.lowctx.lineTo(
       playerIndex !== 5 ? startX + dx + 18 : startX + dx + 3,
-      playerIndex !== 5 ? startY + dy + 31 : startY + dy + 3
+      playerIndex !== 5 ? startY + dy + 31 : startY + dy + 3,
     )
     this.lowctx.stroke()
   }
@@ -478,7 +478,7 @@ class TeamState {
           session: socket.session,
           nickname: socket.nickname,
           playerIndex: this.draggingPlayerIndex,
-        })
+        }),
       )
     } else {
       this.handleSocketUp(this.draggingPlayerIndex)
@@ -500,7 +500,7 @@ class TeamState {
     this.arenaCleaner.onload = () => {
       this.arenaPattern = this.lowctx.createPattern(
         this.arenaCleaner,
-        "no-repeat"
+        "no-repeat",
       )
       this.lowctx.fillStyle = this.arenaPattern
       this.lowctx.fillRect(0, 0, this.lowLayer.width, this.lowLayer.height)

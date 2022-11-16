@@ -13,7 +13,9 @@ const AppRouter = observer(() => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/auth" element={<Auth />} />
-      <Route
+      <Route path="/diagram" element={<Diagram />} />
+      <Route path="/chat" element={<Chat />} />
+      {/* <Route
         path="/diagram"
         element={
           userState.isAuth ? <Diagram /> : <Navigate replace to="/auth" />
@@ -22,7 +24,7 @@ const AppRouter = observer(() => {
       <Route
         path="/chat"
         element={userState.isAuth ? <Chat /> : <Navigate replace to="/auth" />}
-      />
+      /> */}
     </Routes>
   )
 })

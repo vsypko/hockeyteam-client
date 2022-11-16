@@ -23,7 +23,7 @@ class AudioChat {
             nickname: socket.nickname,
             toClient: client.nickname,
             candidate: e.candidate,
-          })
+          }),
         )
       }
     }
@@ -69,7 +69,7 @@ class AudioChat {
           nickname: socket.nickname,
           toClient: client.nickname,
           offer,
-        })
+        }),
       )
     })
   }
@@ -94,7 +94,7 @@ class AudioChat {
           nickname: socket.nickname,
           toClient: msg.nickname,
           answer,
-        })
+        }),
       )
       socket.addAudioClient(client)
     } catch (e) {
