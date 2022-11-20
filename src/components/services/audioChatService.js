@@ -6,7 +6,7 @@ class AudioChat {
   //--------------------------------------------------------------------------------------------------------
   async setPC(client, localStream) {
     client.peer = new RTCPeerConnection({
-      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      iceServers: [{ urls: ["stun:stun.l.google.com:19302", "stun:stun2.l.google.com:19302"] }],
     })
     localStream.getAudioTracks().forEach((track) => {
       client.peer.addTrack(track, localStream)
