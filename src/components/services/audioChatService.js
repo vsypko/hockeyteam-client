@@ -44,10 +44,10 @@ class AudioChat {
   //----------------------------------------------------------------------------------------------------
 
   delPC(client) {
-    client.remoteAudio.srcObject
-      .getAudioTracks()
-      .forEach((track) => track.stop())
-    client.remoteAudio.srcObject = null
+    if (client.remoteAudio.srcObject) {
+      client.remoteAudio.srcObject.getAudioTracks().forEach((track) => track.stop())
+      client.remoteAudio.srcObject = null
+    }
     client.remoteAudio.remove()
     client.remoteAudio = null
     client.peer.close()
