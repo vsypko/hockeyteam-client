@@ -1,3 +1,4 @@
 # hockeyteam-client
 Hockeyteam training app
-https://hockeyteam.site
+https://hockey-practice.herokuapp.com/
+(https://hockeyteam.site - doesn't work correctly due to Heroku limitation)
