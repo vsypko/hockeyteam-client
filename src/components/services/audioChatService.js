@@ -59,18 +59,22 @@ class AudioChat {
 
   async setOffer(remoteClients, localStream) {
     remoteClients.forEach(async (client) => {
-      await this.setPC(client, localStream)
-      const offer = await client.peer.createOffer()
-      await client.peer.setLocalDescription(offer)
-      socket.send(
-        JSON.stringify({
-          method: "offer",
-          session: socket.session,
-          nickname: socket.nickname,
-          toClient: client.nickname,
-          offer,
-        }),
-      )
+      try {
+        await this.setPC(client, localStream)
+        const offer = await client.peer.createOffer()
+        await client.peer.setLocalDescription(offer)
+        socket.send(
+          JSON.stringify({
+            method: "offer",
+            session: socket.session,
+            nickname: socket.nickname,
+            toClient: client.nickname,
+            offer,
+          }),
+        )
+      } catch (e) {
+        console.log("WebRTC offer error:", e)
+      }
     })
   }
 
@@ -98,7 +102,7 @@ class AudioChat {
       )
       socket.addAudioClient(client)
     } catch (e) {
-      console.error("WebRTC answer error", e)
+      console.error("WebRTC answer error:", e)
     }
   }
 

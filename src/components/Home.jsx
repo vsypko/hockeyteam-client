@@ -8,7 +8,6 @@ import image0 from "../assets/image0.jpg"
 import image1 from "../assets/image1.png"
 import image2 from "../assets/image2.png"
 
-import ua_flag from "../assets/ua_flag.svg"
 import ua_toggle from "../assets/ua.png"
 import gb_toggle from "../assets/gb.png"
 
@@ -40,16 +39,8 @@ const Home = () => {
       >
         <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
           {isUA ? "ОПИС ПРОЕКТУ" : "PROJECT DESCRIPTION"}
-          <IconButton
-            sx={{ ml: 4, mb: 1 }}
-            value={isUA}
-            onClick={() => setIsUA(!isUA)}
-          >
-            <img
-              src={isUA ? gb_toggle : ua_toggle}
-              alt="language"
-              width="25px"
-            />
+          <IconButton sx={{ ml: 4, mb: 1 }} value={isUA} onClick={() => setIsUA(!isUA)}>
+            <img src={isUA ? gb_toggle : ua_toggle} alt="language" width="25px" />
           </IconButton>
         </Typography>
       </Box>
@@ -85,10 +76,6 @@ const Home = () => {
 
         <Typography variant="h4" textAlign="center">
           GOOD LUCK ON ICE
-        </Typography>
-        <Typography variant="h4" textAlign="center">
-          GLORY TO UKRAINE
-          <img src={ua_flag} alt="ua_glag" width="45px" />
         </Typography>
         <Typography variant="body2" textAlign="center">
           Copyright © VS_DEV 2022

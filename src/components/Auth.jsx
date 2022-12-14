@@ -61,13 +61,7 @@ const Auth = observer(() => {
   }
 
   return (
-    <Container
-      component="main"
-      noValidate
-      fixed
-      maxWidth="sm"
-      sx={{ height: "80vh", mt: 2 }}
-    >
+    <Container component="main" noValidate fixed maxWidth="sm" sx={{ height: "80vh", mt: 2 }}>
       <Stack
         component="form"
         value={userState.isAuth}
@@ -81,7 +75,7 @@ const Auth = observer(() => {
         }}
       >
         <Typography mt={2}>{login ? "LOG IN" : "SIGN UP"}</Typography>
-        <Typography color="error" mt={2}>
+        <Typography color="red" mt={2}>
           {error}
         </Typography>
         <TextField
@@ -110,29 +104,19 @@ const Auth = observer(() => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             ),
           }}
         />
-        <Button
-          sx={{ width: "80%" }}
-          onClick={handleSubmit}
-          variant="contained"
-        >
+        <Button sx={{ width: "80%" }} onClick={handleSubmit} variant="contained">
           {login ? "LOG IN" : "SIGN UP"}
         </Button>
         <Typography>
           {descriptionText}
-          <Button
-            onClick={() => setLogin(!login)}
-            sx={{ textTransform: "none", outline: "none" }}
-          >
+          <Button onClick={() => setLogin(!login)} sx={{ textTransform: "none", outline: "none" }}>
             {login ? "Sign up?" : "Log in?"}
           </Button>
         </Typography>
@@ -141,12 +125,7 @@ const Auth = observer(() => {
         <GoogleLogin
           clientId={process.env.REACT_APP_CLIENT_ID}
           render={(renderProps) => (
-            <Button
-              onClick={renderProps.onClick}
-              variant="contained"
-              startIcon={<IconGoogle />}
-              sx={{ width: "80%" }}
-            >
+            <Button onClick={renderProps.onClick} variant="contained" startIcon={<IconGoogle />} sx={{ width: "80%" }}>
               AUTHENTICATE WITH A GOOGLE ACCOUNT
             </Button>
           )}
