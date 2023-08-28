@@ -13,7 +13,7 @@ import Stack from "@mui/material/Stack"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import Drawer from "@mui/material/Drawer"
 import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
+import ListItemButton from "@mui/material/ListItemButton"
 import Avatar from "@mui/material/Avatar"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
@@ -57,10 +57,7 @@ const Navbar = observer((props) => {
 
   return (
     <Box>
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar disableGutters sx={{ boxShadow: "0 4px 5px gray" }}>
           <IconButton
             size="large"
@@ -69,48 +66,21 @@ const Navbar = observer((props) => {
             sx={{ ml: 1, display: { xs: "flex", sm: "none" } }}
             onClick={() => setOpenDrawer(!openDrawer)}
           >
-            {openDrawer ? (
-              <CloseIcon fontSize="inherit" />
-            ) : (
-              <MenuIcon fontSize="inherit" />
-            )}
+            {openDrawer ? <CloseIcon fontSize="inherit" /> : <MenuIcon fontSize="inherit" />}
           </IconButton>
-          <Drawer
-            anchor="left"
-            open={openDrawer}
-            onClose={() => setOpenDrawer(false)}
-          >
+          <Drawer anchor="left" open={openDrawer} onClose={() => setOpenDrawer(false)}>
             <Toolbar />
             <List sx={{ fontSize: "20px" }}>
-              <ListItem
-                component={NavLink}
-                to="/"
-                button
-                onClick={() => setOpenDrawer(false)}
-                color="inherit"
-              >
+              <ListItemButton component={NavLink} to="/" onClick={() => setOpenDrawer(false)} color="inherit">
                 DESCRIPTION
-              </ListItem>
-              <ListItem
-                component={NavLink}
-                to="/diagram"
-                button
-                onClick={() => setOpenDrawer(false)}
-                color="inherit"
-              >
+              </ListItemButton>
+              <ListItemButton component={NavLink} to="/diagram" onClick={() => setOpenDrawer(false)} color="inherit">
                 DIAGRAM
-              </ListItem>
-              <ListItem
-                component={NavLink}
-                to="/chat"
-                button
-                onClick={() => setOpenDrawer(false)}
-                color="inherit"
-              >
+              </ListItemButton>
+              <ListItemButton component={NavLink} to="/chat" onClick={() => setOpenDrawer(false)} color="inherit">
                 CHAT INFO
-              </ListItem>
-              <ListItem
-                button
+              </ListItemButton>
+              <ListItemButton
                 onClick={() => {
                   props.onchange(!props.mode)
                   setOpenDrawer(false)
@@ -118,7 +88,7 @@ const Navbar = observer((props) => {
                 color="inherit"
               >
                 {!props.mode ? "DARK MODE" : "LIGHT MODE"}
-              </ListItem>
+              </ListItemButton>
             </List>
           </Drawer>
           <Box ml={1} mr={2}>
@@ -238,12 +208,7 @@ const Navbar = observer((props) => {
                 >
                   <Avatar>{userAbb}</Avatar>
                 </IconButton>
-                <Menu
-                  id="account-menu"
-                  anchorEl={anchorEl}
-                  open={openMenu}
-                  onClose={handleCloseUserMenu}
-                >
+                <Menu id="account-menu" anchorEl={anchorEl} open={openMenu} onClose={handleCloseUserMenu}>
                   <MenuItem onClick={handleProfileDialog}>Profile</MenuItem>
                   <MenuItem onClick={handleCloseUserMenu}>My account</MenuItem>
                   <MenuItem component={NavLink} to="/" onClick={handleLogOut}>
@@ -256,10 +221,7 @@ const Navbar = observer((props) => {
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <ProfileDialog
-        onopen={openProfileDialog}
-        onclose={setOpenProfileDialog}
-      />
+      <ProfileDialog onopen={openProfileDialog} onclose={setOpenProfileDialog} />
     </Box>
   )
 })

@@ -23,10 +23,7 @@ class UserState {
 
   async checkAuth() {
     try {
-      this.response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/refresh`,
-        { withCredentials: true }
-      )
+      this.response = await axios.get(`${process.env.REACT_APP_API_URL}/refresh`, { withCredentials: true })
       this.setAuth(true)
       localStorage.setItem("token", this.response.data.accessToken)
       this.setUser(this.response.data.user)
