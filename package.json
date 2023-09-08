@@ -50,7 +50,7 @@
       "last 1 safari version"
     ]
   },
-  "main": "server.js",
+  "main": "index.js",
   "author": "",
   "license": "ISC",
   "description": ""
