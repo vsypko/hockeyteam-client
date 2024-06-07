@@ -12,20 +12,32 @@ const Canvases = observer(() => {
   let width = canvasScape ? 387 : 787
   let height = canvasScape ? 787 : 387
 
-  const lowLayerRef = React.useRef()
-  const topLayerRef = React.useRef()
+  const lowlayer = React.useRef(null)
+  const toplayer = React.useRef(null)
 
   React.useEffect(() => {
-    layerState.setCanvasScape(canvasScape)
-    layerState.setLowLayer(lowLayerRef.current)
-    layerState.setTopLayer(topLayerRef.current)
-    teamState.rinkInit()
-  }, [canvasScape])
+    if (lowlayer.current && toplayer.current) {
+      layerState.setCanvasScape(canvasScape)
+      layerState.setLowLayer(lowlayer.current)
+      layerState.setTopLayer(toplayer.current)
+      teamState.rinkInit()
+    }
+  }, [lowlayer, toplayer, canvasScape])
 
   return (
     <Box className="arena">
-      <canvas ref={lowLayerRef} width={width} height={height} className="lowlayer"></canvas>
-      <canvas ref={topLayerRef} width={width} height={height} className="toplayer"></canvas>
+      <canvas
+        ref={lowlayer}
+        width={width}
+        height={height}
+        className="lowlayer"
+      />
+      <canvas
+        ref={toplayer}
+        width={width}
+        height={height}
+        className="toplayer"
+      />
     </Box>
   )
 })

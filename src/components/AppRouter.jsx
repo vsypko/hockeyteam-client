@@ -1,12 +1,13 @@
-import React from "react"
-import { Routes, Route, Navigate } from "react-router-dom"
-import { observer } from "mobx-react-lite"
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+// import { Navigate } from "react-router-dom"
+import { observer } from 'mobx-react-lite'
 
-import Auth from "./Auth"
-import Chat from "./Chat"
-import Home from "./Home"
-import Diagram from "./Diagram"
-import userState from "./store/userState"
+import Auth from './Auth'
+import Chat from './Chat'
+import Home from './Home'
+import Diagram from './Diagram'
+// import userState from "./store/userState"
 
 const AppRouter = observer(() => {
   return (
