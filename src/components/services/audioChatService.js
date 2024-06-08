@@ -1,29 +1,36 @@
 // eslint-disable-next-line no-unused-vars
-import adapter from "webrtc-adapter"
-import socket from "../store/socketState"
+import adapter from 'webrtc-adapter'
+import socket from '../store/socketState'
 
 class AudioChat {
   //--------------------------------------------------------------------------------------------------------
   async setPC(client, localStream) {
     client.peer = new RTCPeerConnection({
-      iceServers: [{ urls: ["stun:stun.l.google.com:19302", "stun:stun2.l.google.com:19302"] }],
+      // iceServers: [{ urls: ["stun:stun.l.google.com:19302", "stun:stun2.l.google.com:19302"] }],
+      iceServers: [
+        {
+          urls: process.env.REACT_APP_TURN_URL,
+          username: process.env.REACT_APP_TURN_USERNAME,
+          credential: process.env.REACT_APP_TURN_PASSWORD,
+        },
+      ],
     })
     localStream.getAudioTracks().forEach((track) => {
       client.peer.addTrack(track, localStream)
     })
-    client.remoteAudio = document.createElement("audio")
+    client.remoteAudio = document.createElement('audio')
     client.remoteAudio.autoplay = true
 
     client.peer.onicecandidate = (e) => {
       if (e.candidate) {
         socket.send(
           JSON.stringify({
-            method: "candidate",
+            method: 'candidate',
             session: socket.session,
             nickname: socket.nickname,
             toClient: client.nickname,
             candidate: e.candidate,
-          }),
+          })
         )
       }
     }
@@ -37,7 +44,7 @@ class AudioChat {
     }
 
     client.peer.onclose = (e) => {
-      console.log("close event: ", e)
+      console.log('close event: ', e)
     }
   }
 
@@ -45,7 +52,9 @@ class AudioChat {
 
   delPC(client) {
     if (client.remoteAudio.srcObject) {
-      client.remoteAudio.srcObject.getAudioTracks().forEach((track) => track.stop())
+      client.remoteAudio.srcObject
+        .getAudioTracks()
+        .forEach((track) => track.stop())
       client.remoteAudio.srcObject = null
     }
     client.remoteAudio.remove()
@@ -65,15 +74,15 @@ class AudioChat {
         await client.peer.setLocalDescription(offer)
         socket.send(
           JSON.stringify({
-            method: "offer",
+            method: 'offer',
             session: socket.session,
             nickname: socket.nickname,
             toClient: client.nickname,
             offer,
-          }),
+          })
         )
       } catch (e) {
-        console.log("WebRTC offer error:", e)
+        console.log('WebRTC offer error:', e)
       }
     })
   }
@@ -93,16 +102,16 @@ class AudioChat {
 
       socket.send(
         JSON.stringify({
-          method: "answer",
+          method: 'answer',
           session: socket.session,
           nickname: socket.nickname,
           toClient: msg.nickname,
           answer,
-        }),
+        })
       )
       socket.addAudioClient(client)
     } catch (e) {
-      console.error("WebRTC answer error:", e)
+      console.error('WebRTC answer error:', e)
     }
   }
 
@@ -115,7 +124,7 @@ class AudioChat {
       const answer = new RTCSessionDescription(msg.answer)
       await client.peer.setRemoteDescription(answer)
     } catch (e) {
-      console.error("WebRTS set description error", e)
+      console.error('WebRTS set description error', e)
     }
   }
 
